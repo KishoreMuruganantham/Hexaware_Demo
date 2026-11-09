@@ -21,13 +21,7 @@ public class AuthUtility {
         if (header == null || !header.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Please log in to continue");
         }
-        TokenUtility.TokenUser tokenUser = tokenUtility.readToken(header.substring(7));
-        Employee employee = employeeService.getEmployeeById(tokenUser.employeeId());
-        if (!employee.getEmail().equals(tokenUser.email()) ||
-                !employee.getRole().name().equals(tokenUser.role())) {
-            throw new IllegalArgumentException("Invalid login token");
-        }
-        return employee;
+        return employeeService.getEmployeeById(tokenUtility.readToken(header.substring(7)));
     }
 
     public Employee requireAdmin(HttpServletRequest request) {
